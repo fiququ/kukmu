@@ -22,11 +22,16 @@ class CustomVRButton {
             button.onclick = function () {
                 button.style.display = 'none';
                 renderer.xr.enabled = true;
-                renderer.xr.getSession().then(function (session) {
-                    session.addEventListener('end', function () {
-                        button.style.display = '';
+                const session = renderer.xr.getSession();
+                if (session) {
+                    session.then(function (session) {
+                        session.addEventListener('end', function () {
+                            button.style.display = '';
+                        });
                     });
-                });
+                } else {
+                    console.error('WebXR session is null or undefined');
+                }
             };
         }
 
